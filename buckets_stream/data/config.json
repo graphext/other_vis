@@ -5,52 +5,37 @@
 		"aws_access_key_id": "",
 		"aws_secret_access_key": "",
 		"aws_bucket": "devembeddables.graphext.com",
-		"google_analytics_id": "",
-		"twitter_consumer_key": "",
-		"twitter_consumer_secret": "",
-		"twitter_oauth_token": "",
-		"twitter_oauth_token_secret": ""
+		"google_analytics_id": "***REMOVED***",
+		"twitter_consumer_key": "***REMOVED***",
+		"twitter_consumer_secret": "***REMOVED***",
+		"twitter_oauth_token": "***REMOVED***",
+		"twitter_oauth_token_secret": "***REMOVED***"
 	},
 	"monitor": {
-		"file": "(_iphone_7__OR_huawei)_lang_es_since_2017-02-25_until_2017-03-05_.csv",
-		"terms": [],
+		//"file": "(_iphone_7__OR_huawei)_lang_es_since_2017-02-25_until_2017-03-05_.csv",
+		"terms": ["Trump", "Putin"],
 		"twitter_profile_ids": [],
-		"stopwords": ["spanish"],
+		"stopwords": ["spanish", "english"],
 		"refresh_period_secs": 100
 	},
 	"streams": [
 		{
 			"title": "Competitors",
-			"time_window_size_mins": 44640, // 31d
-			"time_bins_size_mins": 360, // 6h
+			"time_window_size_mins": 60, // 31d
+			"time_bins_size_mins": 1, // 6h
 			"filter": {
 				"match_all": {}
 			},
 			"buckets": [
 				{
-					"_name": "iPhone 7",
+					"_name": "Trump",
 					"_color": "#279fd5",
-					"text": ["iPhone 7"]
+					"text": ["Trump"]
 				},
 				{
-					"_name": "Huawei",
+					"_name": "Putin",
 					"_color": "#ff0000",
-					"text": ["Huawei"]
-				},
-				{
-					"_name": "Samsung Galaxy",
-					"_color": "#279fd5",
-					"text": ["Samsung Galaxy"]
-				},
-				{
-					"_name": "Sony Xperia",
-					"_color": "#279fd5",
-					"text": ["Sony Xperia"]
-				},
-				{
-					"_name": "Nokia Lumia",
-					"_color": "#279fd5",
-					"text": ["Nokia Lumia"]
+					"text": ["Putin"]
 				}
 			]
 		}

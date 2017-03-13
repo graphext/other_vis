@@ -10,7 +10,7 @@ ENV TERM xterm
 ENV ELASTICSEARCH_VERSION 2.3.5
 
 RUN apk add --update --no-cache \
-	curl openjdk8 \
+	openssl-dev curl openjdk8 \
 	ruby ruby-dev \
 	make g++ zlib-dev \
 	tmux bash screen util-linux
@@ -25,7 +25,7 @@ RUN apk add --no-cache --allow-untrusted \
 	&& apk del glibc-i18n \
 	&& rm *.apk
 
-RUN gem install --no-rdoc --no-ri httpclient json fog-aws activesupport mime-types
+RUN gem install --no-rdoc --no-ri httpclient fog-aws activesupport mime-types tweetstream json:'~> 1.8'
 
 RUN adduser -h /home/user -s /bin/bash -G root -D user
 USER user
