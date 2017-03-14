@@ -1,22 +1,32 @@
-require 'tweetstream'
+require 'twitter'
 require 'pp'
 
+def monitor_tweets(terms, type, tokens, &block)
+	client = Twitter::Streaming::Client.new do |c|
+		c.consumer_key        = tokens["twitter_consumer_key"]
+		c.consumer_secret     = tokens["twitter_consumer_secret"]
+		c.access_token        = tokens["twitter_oauth_token"]
+		c.access_token_secret = tokens["twitter_oauth_token_secret"]
+	end
 
-def monitor_tweets(terms, type, &block)
 	if type == :terms
-		TweetStream::Client.new.track(terms.join(',')) do |status|
-			_process_tweet(status, block)
+		client.filter(track: terms.join(',')) do |status|
+			if status.is_a?(Twitter::Tweet)
+				_process_tweet(status, type, block)
+			else
+				pp status
+			end
 		end
-	elsif type == :ids
+	elsif type == :twitter_profile_ids
 		ids_set = Set.new(terms)
-		TweetStream::Client.new.follow(terms) do |status|
-			_process_tweet(status, block) if ids_set.include? status.user.id
+		client.filter(follow: terms.join(',')) do |status|
+			_process_tweet(status, type, block) if status.is_a?(Twitter::Tweet) && ids_set.include?(status.user.id)
 		end
 	end
 end
 
 
-def _process_tweet(status, cb)
+def _process_tweet(status, type, cb)
 	location = status.geo.coordinates.join(',') unless status.geo.coordinates.nil?
 	rt_user_id = status.retweeted_tweet.user.id if status.retweet?
 	rt_user_name = status.retweeted_tweet.user.screen_name if status.retweet?
@@ -38,7 +48,8 @@ def _process_tweet(status, cb)
 		rt_user_name: rt_user_name,
 		rp_user_id: rp_user_id,
 		rp_user_name: rp_user_name,
-		location: location
+		location: location,
+		type: type
 	}
 
 	tweet_h.merge!(extra)

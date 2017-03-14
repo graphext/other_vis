@@ -25,7 +25,7 @@ RUN apk add --no-cache --allow-untrusted \
 	&& apk del glibc-i18n \
 	&& rm *.apk
 
-RUN gem install --no-rdoc --no-ri httpclient fog-aws activesupport mime-types tweetstream json:'~> 1.8'
+RUN gem install --no-rdoc --no-ri httpclient fog-aws activesupport mime-types twitter json
 
 RUN adduser -h /home/user -s /bin/bash -G root -D user
 USER user

@@ -5,7 +5,9 @@ def setup_elastic(stopwords)
 	# Copy & start elasticsearch
 	system("mv elasticsearch data/") unless Dir.exist?('data/elasticsearch')
 	$stdout.write "Initiating elasticsearch... "
-	system("data/elasticsearch/bin/elasticsearch &>/dev/null &")
+
+	pid = spawn("data/elasticsearch/bin/elasticsearch &>/dev/null")
+
 	begin
 		HTTPClient.get("http://localhost:9200")
 	rescue
@@ -111,4 +113,6 @@ def setup_elastic(stopwords)
 	end
 
 	puts "OK"
+
+	pid
 end

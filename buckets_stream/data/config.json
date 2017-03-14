@@ -1,41 +1,69 @@
 {
 	"client": "Miguel",
-	"project": "Huawei Competitors",
+	"project": "Pi Day",
 	"tokens": {
+		"aws_bucket": "devembeddables.graphext.com",
 		"aws_access_key_id": "",
 		"aws_secret_access_key": "",
-		"aws_bucket": "devembeddables.graphext.com",
-		"google_analytics_id": "***REMOVED***",
-		"twitter_consumer_key": "***REMOVED***",
-		"twitter_consumer_secret": "***REMOVED***",
-		"twitter_oauth_token": "***REMOVED***",
-		"twitter_oauth_token_secret": "***REMOVED***"
+		"google_analytics_id": "UA-57126770-1",
+		"twitter_consumer_key": "",
+		"twitter_consumer_secret": "",
+		"twitter_oauth_token": "",
+		"twitter_oauth_token_secret": ""
 	},
 	"monitor": {
 		//"file": "(_iphone_7__OR_huawei)_lang_es_since_2017-02-25_until_2017-03-05_.csv",
-		"terms": ["Trump", "Putin"],
+		"terms": ["#PiDay"],
 		"twitter_profile_ids": [],
 		"stopwords": ["spanish", "english"],
 		"refresh_period_secs": 100
 	},
+	"sections": [
+		{
+			"name": "Apertura", "text": "Apertura de colegios electorales",
+			"x0": "2017-03-14T19:15:00.000+01:00",
+			"x1": "2017-03-14T19:20:00.000+01:00"
+		}
+	],
 	"streams": [
 		{
-			"title": "Competitors",
+			"title": "Pi Day",
 			"time_window_size_mins": 60, // 31d
 			"time_bins_size_mins": 1, // 6h
 			"filter": {
-				"match_all": {}
+				//"match_all": {}
+				"term": {
+					"is_retweet": false
+				}
+			},
+			"buckets": [
+				{
+					"_name": "Girls",
+					"_color": "#279fd5",
+					"text": ["feminism","women","girls"]
+				},
+				{
+					"_name": "Maths",
+					"_color": "#ff0000",
+					"text": ["maths","scientist","programmer","computing"]
+				}
+			]
+		},
+		{
+			"title": "Trump?",
+			"time_window_size_mins": 60, // 31d
+			"time_bins_size_mins": 1, // 6h
+			"filter": {
+				//"match_all": {}
+				"term": {
+					"is_retweet": false
+				}
 			},
 			"buckets": [
 				{
 					"_name": "Trump",
 					"_color": "#279fd5",
-					"text": ["Trump"]
-				},
-				{
-					"_name": "Putin",
-					"_color": "#ff0000",
-					"text": ["Putin"]
+					"text": ["trump"]
 				}
 			]
 		}

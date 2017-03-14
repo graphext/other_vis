@@ -14,7 +14,7 @@
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	ga('create', '***REMOVED***', 'auto', {'name': 'event_tracker'});
+	ga('create', '__google_analytics_id__', 'auto', {'name': 'event_tracker'});
 	ga('event_tracker.send', 'pageview');
 
 	//]]>
@@ -58,19 +58,13 @@ for(r=0;s=e[r++];)for(;n.indexOf(" "+s+" ")>=0;)n=n.replace(" "+s+" "," ");o=t?s
 			location.reload();
 		}
 		$(function() {
-			onInit('data.json');
-			//setInterval(refresh, 300000);
-			// $("#box_container").bind("mouseenter", function() {
-			// 	ga('event_tracker.send', 'event', 'event_tracker', 'Embedded Interacted', 'fuente:26JElecciones, tipo:menciones');
-			// 	$("#box_container").unbind("mouseenter");
-			// });
+			onInit('data.json', __sections__);
+			setInterval(refresh, __refresh_period_secs__*1000);
 		});
 	</script>
 
 	<script>
-	//<![CDATA[
-	//ga('event_tracker.send', 'event', 'event_tracker', 'Embedded Loaded', 'fuente:26JElecciones, tipo:menciones');
-	//]]>
+	ga('event_tracker.send', 'event', 'event_tracker', 'Embedded Loaded', "__event_info__");
 	</script>
 </body>
 </html>
