@@ -18,7 +18,43 @@ def setup_elastic(stopwords)
 	# Load index
 	index_config = {
 		mappings: {
-			tweet: {
+			terms: {
+				properties: {
+					text: {
+						type: "string",
+						analyzer: "analyzer"
+					},
+					processed_text: {
+						type: "string",
+						analyzer: "processed_analyzer"
+					},
+					date: {
+						type: "date"
+					},
+					created_at: {
+						type: "date"
+					}
+				}
+			},
+			twitter_profile_ids: {
+				properties: {
+					text: {
+						type: "string",
+						analyzer: "analyzer"
+					},
+					processed_text: {
+						type: "string",
+						analyzer: "processed_analyzer"
+					},
+					date: {
+						type: "date"
+					},
+					created_at: {
+						type: "date"
+					}
+				}
+			},
+			file: {
 				properties: {
 					text: {
 						type: "string",

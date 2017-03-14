@@ -3,12 +3,12 @@ require 'pp'
 
 $body_req = ""
 $buffer_size = 0
-def index_tweet(tweet, nSize=0)
+def index_tweet(tweet, type, nSize=0)
 	if tweet
 		#pp tweet
 		$stdout.write "."
 		$body_req += {
-			index: {_index: "tweets", _type: "tweet", _id: tweet["id"] || tweet[:id_str] || tweet["id_str"] }
+			index: {_index: "tweets", _type: type, _id: tweet["id"] || tweet[:id_str] || tweet["id_str"] }
 		}.to_json + "\n" + tweet.to_json + "\n"
 		$buffer_size += 1
 	end

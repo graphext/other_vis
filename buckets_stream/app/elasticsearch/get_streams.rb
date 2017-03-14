@@ -11,7 +11,7 @@ def get_streams(streams, path)
 		final_date = Time.now.to_i*1000
 		data << {
 			title: stream["title"],
-			data: fill_buckets('tweets', 'tweet', stream["filter"], initial_date, final_date, 'date', stream["buckets"], stream["time_bins_size_mins"]*60, stream["time_bins_size_mins"])
+			data: fill_buckets('tweets', nil, stream["filter"], initial_date, final_date, 'date', stream["buckets"], stream["time_bins_size_mins"]*60, stream["time_bins_size_mins"])
 		}
 	end
 

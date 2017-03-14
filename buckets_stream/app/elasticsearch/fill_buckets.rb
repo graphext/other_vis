@@ -95,7 +95,7 @@ def fill_buckets(index, type, query_filter, init_date, last_date, date_field, bu
 
 	puts query_hash.to_json
 
-	endpoint = "http://localhost:9200/#{index}/#{type}/_search"
+	endpoint = "http://localhost:9200/#{index}#{type.nil? ? "" : "/"+type}/_search"
 	response = JSON.parse(HTTPClient.post_content(endpoint, body: query_hash.to_json))
 
 	buckets = response["aggregations"]["topics"]["buckets"].map do |name, bucket|
