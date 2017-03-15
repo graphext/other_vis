@@ -8,6 +8,7 @@ ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 ENV TERM xterm
 ENV ELASTICSEARCH_VERSION 2.3.5
+ENV ES_JAVA_OPTS "-Xms256m -Xmx768m"
 
 RUN apk add --update --no-cache \
 	openssl-dev curl openjdk8 \

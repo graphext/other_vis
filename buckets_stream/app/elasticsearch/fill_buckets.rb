@@ -18,7 +18,6 @@ def _get_filters_from_buckets(buckets)
 
 				v.each do |term|
 					occur = "match_phrase"
-					#occur << "_phrase" if term.is_a?(String) && !term.index(' ').nil?
 					sub_filters[type] << {
 						occur => {
 							field[0] => term
