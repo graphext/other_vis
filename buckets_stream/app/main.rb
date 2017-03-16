@@ -41,6 +41,7 @@ else
 	end
 	if terms && terms.length > 0
 		threads << Thread.new{index_twitter(terms, :terms, config["tokens"])}
+		sleep 1
 	end
 	if twitter_profile_ids && twitter_profile_ids.length > 0
 		threads << Thread.new{index_twitter(twitter_profile_ids, :twitter_profile_ids, config["tokens"])}

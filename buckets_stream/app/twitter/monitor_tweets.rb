@@ -9,14 +9,20 @@ def monitor_tweets(terms, type, tokens, &block)
 		oauth_token_secret: tokens["twitter_oauth_token_secret"],
 		auth_method: :oauth
 	})
+	events = [:on_anything, :on_control, :on_enhance_your_calm, :on_error, :on_inited, :on_limit, :on_no_data_received, :on_reconnect, :on_stall_warning, :on_status_withheld, :on_unauthorized, :on_user_withheld]
+	events.each do |cb_name|
+		client.send(cb_name) do |*args|
+			puts "[#{type}] #{cb_name.to_s}: #{args}"
+		end
+	end
 
 	if type == :terms
-		client.filter(track: terms.join(',')) do |status|
+		client.filter(track: terms) do |status|
 			_process_tweet(status, type, block)
 		end
 	elsif type == :twitter_profile_ids
 		ids_set = Set.new(terms)
-		client.filter(follow: terms.join(',')) do |status|
+		client.filter(follow: terms) do |status|
 			_process_tweet(status, type, block) if ids_set.include?(status.user.id)
 		end
 	end
