@@ -6,8 +6,8 @@ def index_csv(filename)
 	CSV.foreach('data/' + filename, headers: true, skip_blanks: true, col_sep: ',', encoding: 'UTF-8') do |r|
 		tweet = r.to_h
 		$stdout.write "\rIndexing... [#{i+=1}]"
-		index_tweet(tweet, "file", 1000)
+		index_tweet(tweet, :file, 1000)
 	end
-	index_tweet(nil, 0)
+	index_tweet(nil, nil, 0)
 	$stdout.write "\rIndex completed\n"
 end

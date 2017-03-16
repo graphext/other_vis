@@ -1,7 +1,7 @@
 require 'tweetstream'
 require 'pp'
 
-def monitor_tweets(terms, type, tokens, &block)
+def monitor_tweets(terms, twitter_profile_ids, tokens, &block)
 	client = TweetStream::Client.new({
 		consumer_key: tokens["twitter_consumer_key"],
 		consumer_secret: tokens["twitter_consumer_secret"],
@@ -12,24 +12,31 @@ def monitor_tweets(terms, type, tokens, &block)
 	events = [:on_anything, :on_control, :on_enhance_your_calm, :on_error, :on_inited, :on_limit, :on_no_data_received, :on_reconnect, :on_stall_warning, :on_status_withheld, :on_unauthorized, :on_user_withheld]
 	events.each do |cb_name|
 		client.send(cb_name) do |*args|
-			puts "[#{type}] #{cb_name.to_s}: #{args}"
+			puts "#{cb_name.to_s}: #{args}"
 		end
 	end
 
-	if type == :terms
-		client.filter(track: terms) do |status|
-			_process_tweet(status, type, block)
+	ids_set = Set.new(twitter_profile_ids)
+	term_regexes = terms.map{|t| /(?:[^\w]+|^)#{Regexp.escape(t)}(?:[^\w]+|$)/i }
+
+	client.filter(track: terms.join(','), follow: twitter_profile_ids.join(',')) do |status|
+		tweet = _process_tweet(status)
+		text = tweet[:text]
+
+		if ids_set.include?(tweet[:user][:id])
+			tweet[:type] = :twitter_profile_ids
+			block.call(tweet)
 		end
-	elsif type == :twitter_profile_ids
-		ids_set = Set.new(terms)
-		client.filter(follow: terms) do |status|
-			_process_tweet(status, type, block) if ids_set.include?(status.user.id)
+
+		if term_regexes.any?{|re| text =~ re }
+			tweet[:type] = :terms
+			block.call(tweet)
 		end
 	end
 end
 
 
-def _process_tweet(status, type, cb)
+def _process_tweet(status)
 	location = status.geo.coordinates.join(',') unless status.geo.coordinates.nil?
 	rt_user_id = status.retweeted_tweet.user.id if status.retweet?
 	rt_user_name = status.retweeted_tweet.user.screen_name if status.retweet?
@@ -51,13 +58,10 @@ def _process_tweet(status, type, cb)
 		rt_user_name: rt_user_name,
 		rp_user_id: rp_user_id,
 		rp_user_name: rp_user_name,
-		location: location,
-		type: type
+		location: location
 	}
 
-	tweet_h.merge!(extra)
-
-	cb.call(tweet_h)
+	tweet_h.merge(extra)
 rescue
 	pp "RESCUED:"
 	pp tweet_h

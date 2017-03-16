@@ -22,8 +22,8 @@ trap "SIGINT" do
 end
 
 filename = config["monitor"]["file"]
-terms = config["monitor"]["terms"]
-twitter_profile_ids = config["monitor"]["twitter_profile_ids"]
+terms = config["monitor"]["terms"] || []
+twitter_profile_ids = config["monitor"]["twitter_profile_ids"] || []
 
 remote_dir = escape_filename(config["client"]) +'/'+ escape_filename(config["project"])
 
@@ -39,12 +39,8 @@ else
 			sleep config["monitor"]["refresh_period_secs"]
 		end
 	end
-	if terms && terms.length > 0
-		threads << Thread.new{index_twitter(terms, :terms, config["tokens"])}
-		sleep 1
-	end
-	if twitter_profile_ids && twitter_profile_ids.length > 0
-		threads << Thread.new{index_twitter(twitter_profile_ids, :twitter_profile_ids, config["tokens"])}
+	if terms.length > 0 || twitter_profile_ids.length > 0
+		threads << Thread.new{index_twitter(terms, twitter_profile_ids, config["tokens"])}
 	end
 end
 
