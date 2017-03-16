@@ -1,26 +1,23 @@
-require 'twitter'
+require 'tweetstream'
 require 'pp'
 
 def monitor_tweets(terms, type, tokens, &block)
-	client = Twitter::Streaming::Client.new do |c|
-		c.consumer_key        = tokens["twitter_consumer_key"]
-		c.consumer_secret     = tokens["twitter_consumer_secret"]
-		c.access_token        = tokens["twitter_oauth_token"]
-		c.access_token_secret = tokens["twitter_oauth_token_secret"]
-	end
+	client = TweetStream::Client.new({
+		consumer_key: tokens["twitter_consumer_key"],
+		consumer_secret: tokens["twitter_consumer_secret"],
+		oauth_token: tokens["twitter_oauth_token"],
+		oauth_token_secret: tokens["twitter_oauth_token_secret"],
+		auth_method: :oauth
+	})
 
 	if type == :terms
 		client.filter(track: terms.join(',')) do |status|
-			if status.is_a?(Twitter::Tweet)
-				_process_tweet(status, type, block)
-			else
-				pp status
-			end
+			_process_tweet(status, type, block)
 		end
 	elsif type == :twitter_profile_ids
 		ids_set = Set.new(terms)
 		client.filter(follow: terms.join(',')) do |status|
-			_process_tweet(status, type, block) if status.is_a?(Twitter::Tweet) && ids_set.include?(status.user.id)
+			_process_tweet(status, type, block) if ids_set.include?(status.user.id)
 		end
 	end
 end

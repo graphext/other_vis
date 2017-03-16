@@ -64,15 +64,15 @@ An array with every streamgraph definition.
 		"bool": {
 			"must": [
 				{ "term": { "is_retweet": false } },
-				{ "term": { "author.lang": "es" } },
+				{ "term": { "lang": "es" } },
 				{ "type": { "value": "terms" } }
 			]
-    	}
+		}
 	},
 	"buckets": [
 		{
-	        "_name": "Novartis",
-	        "_color": "#ff0000",
+			"_name": "Novartis",
+			"_color": "#ff0000",
 			"text": ["Novartis","NovartisPharma"]
 		},
 		{
