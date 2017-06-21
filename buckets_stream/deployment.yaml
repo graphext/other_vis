@@ -1,0 +1,42 @@
+kind: StatefulSet
+apiVersion: apps/v1beta1
+metadata:
+  name: buckets-stream-statefulset
+  labels:
+    app: buckets-stream
+spec:
+  serviceName: buckets-stream
+  replicas: 1
+
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      annotations:
+        volume.beta.kubernetes.io/storage-class: fast
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 20Gi
+  template:
+    metadata:
+      labels:
+        app: buckets-stream
+    spec:
+      volumes:
+      - name: data
+      - name: buckets-stream-secret
+        secret:
+          secretName: buckets-stream-secret
+
+      containers:
+      - name: buckets-stream
+        image: gcr.io/graphext-0/buckets-stream:build1
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: data
+          mountPath: /home/user/data
+        - name: buckets-stream-secret
+          mountPath: /home/user/data/config.json
+          subPath: config.json
+

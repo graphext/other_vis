@@ -1,7 +1,7 @@
 # docker build . -t buckets_stream
 # docker run -it -v `pwd`/data:/home/user/data buckets_stream
 
-FROM alpine
+FROM alpine:3.6
 MAINTAINER Miguel Canton <miguel@graphext.com>
 
 ENV LC_ALL C.UTF-8
