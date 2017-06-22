@@ -31,7 +31,7 @@ spec:
 
       containers:
       - name: buckets-stream
-        image: gcr.io/graphext-0/buckets-stream:build2
+        image: gcr.io/graphext-0/buckets-stream:build3
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: data

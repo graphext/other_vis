@@ -4,7 +4,7 @@ require 'httpclient'
 def setup_elastic(stopwords)
 	# Copy & start elasticsearch
 	system("mv elasticsearch /data/") unless Dir.exist?('/data/elasticsearch')
-	system("chmod 777 /data/elasticsearch")
+	system("chmod 777 -R /data/elasticsearch")
 	$stdout.write "Initiating elasticsearch... "
 
 	pid = spawn("su elasticuser -s /bin/bash -c '/data/elasticsearch/bin/elasticsearch' &>/dev/null")
