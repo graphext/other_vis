@@ -3,10 +3,11 @@ require 'httpclient'
 
 def setup_elastic(stopwords)
 	# Copy & start elasticsearch
-	system("mv elasticsearch data/") unless Dir.exist?('data/elasticsearch')
+	system("mv elasticsearch /data/") unless Dir.exist?('/data/elasticsearch')
+	system("chmod 777 /data/elasticsearch")
 	$stdout.write "Initiating elasticsearch... "
 
-	pid = spawn("data/elasticsearch/bin/elasticsearch &>/dev/null")
+	pid = spawn("su elasticuser -s /bin/bash -c '/data/elasticsearch/bin/elasticsearch' &>/dev/null")
 
 	begin
 		HTTPClient.get("http://localhost:9200")

@@ -28,21 +28,19 @@ RUN apk add --no-cache --allow-untrusted \
 
 RUN gem install --no-rdoc --no-ri httpclient fog-aws activesupport mime-types tweetstream json:'~>1.8'
 
-RUN adduser -h /home/user -s /bin/bash -G root -D user
-USER user
-WORKDIR /home/user
 
-RUN mkdir data
+WORKDIR /app
+RUN addgroup elasticuser && adduser -G elasticuser -D elasticuser
+RUN chown elasticuser:elasticuser .
 RUN curl -L https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-$ELASTICSEARCH_VERSION.tar.gz -o elasticsearch.tar.gz \
 	&& tar -xzf elasticsearch.tar.gz \
 	&& rm -rf elasticsearch.tar.gz \
 	&& mv elasticsearch-$ELASTICSEARCH_VERSION elasticsearch
-
 COPY www www
-COPY app app
+COPY app .
 COPY tmux.conf .tmux.conf
 
-VOLUME /home/user/data
+VOLUME /data
 
 #CMD bash -c "script -q -c 'tmux -f .tmux.conf'"
-ENTRYPOINT ruby app/main.rb
+ENTRYPOINT ruby main.rb

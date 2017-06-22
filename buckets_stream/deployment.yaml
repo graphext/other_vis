@@ -31,12 +31,12 @@ spec:
 
       containers:
       - name: buckets-stream
-        image: gcr.io/graphext-0/buckets-stream:build1
+        image: gcr.io/graphext-0/buckets-stream:build2
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: data
-          mountPath: /home/user/data
+          mountPath: /data
         - name: buckets-stream-secret
-          mountPath: /home/user/data/config.json
+          mountPath: /data/config.json
           subPath: config.json
 

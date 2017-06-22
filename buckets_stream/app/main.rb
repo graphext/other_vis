@@ -8,7 +8,7 @@ require_relative 'output/prepare_web'
 require_relative 'output/escape_filename'
 require_relative 'output/upload_folder'
 
-config = JSON.parse(IO.read("data/config.json"))
+config = JSON.parse(IO.read("/data/config.json"))
 
 prepare_web(config)
 
@@ -29,13 +29,13 @@ remote_dir = escape_filename(config["client"]) +'/'+ escape_filename(config["pro
 
 if filename && filename.strip.length > 0
 	index_csv(filename)
-	get_streams(config["streams"], "data/www/data.json")
-	upload_folder("data/www", remote_dir, config["tokens"])
+	get_streams(config["streams"], "/data/www/data.json")
+	upload_folder("/data/www", remote_dir, config["tokens"])
 else
 	threads << Thread.new do
 		loop do
-			get_streams(config["streams"], "data/www/data.json")
-			upload_folder("data/www", remote_dir, config["tokens"])
+			get_streams(config["streams"], "/data/www/data.json")
+			upload_folder("/data/www", remote_dir, config["tokens"])
 			sleep config["monitor"]["refresh_period_secs"]
 		end
 	end
